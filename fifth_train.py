@@ -17,7 +17,7 @@ def daily_change(prices):
 	for price in prices:
 		gap= prices[price+1] - prices[prices]
 		changes.append(gap)
-	return change
+	return changes
 	
 #daily return
 def daily_return(gaps, prices):
@@ -26,9 +26,22 @@ def daily_return(gaps, prices):
 		rates.append(round((gap/price)*100, 2))
 	return rates
 
+#Classified return
+def return_classification(rates):
+	upper = max(rates)
+	lower = min(rates)
+	meanRates = sum(rates)/len(rates)
+	return upper, lower, meanRates
+
+#simple volatility
+def simple_volatility(changes):
+	absolute_changes= [abs(change) for change in changes]
+	abs_change = max(absolute_changes)
+	return abs_change
+
 #
 
-result= {}
-for price in prices:
-	asse
-print(asset["stock"])
+# result= {}
+# for price in prices:
+# 	asset
+# print(asset["stock"])

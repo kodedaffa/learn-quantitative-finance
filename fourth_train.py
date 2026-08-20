@@ -97,34 +97,34 @@ def analysis_continue(raw_inp):
 		inp_b= raw_inp[i+1]
 		if inp_a > 1 and inp_b > 60:
 
-			strength= "strong"
+			power= "strong"
 		elif inp_a > 1 and inp_b < 60:
-			strength= "moderate"
+			power= "moderate"
 		else:
-			strength= "weak"
-	return strength
+			power= "weak"
+		return power
 	
 
 for i, stock in enumerate (group_stock, 1):
- 	total, minimum, maximum, mean = stock_statistic(stock)
- 	group_total.append(total)
- 	group_min.append(minimum)
- 	group_max.append(maximum)
- 	group_mean.append(mean)
- 	daily_change = stock_change(stock)
- 	group_change.append(daily_change)
- 	daily_return = stock_return(daily_change, stock)
- 	group_rate.append(daily_return)
- 	top, bottom = return_analysis(daily_return)
- 	high = simple_volatility(daily_change)
- 	group_high.append(high)
- 	positive, negative= consistency(daily_change)
- 	group_positive.append(positive)
- 	group_negative.append(negative)
- 	group_frequency.append(len(positive))
- 	rate_positive = rate_consistent(positive, daily_change)
- 	group_ratio.append(rate_positive)
- 
+	total, minimum, maximum, mean = stock_statistic(stock)
+	group_total.append(total)
+	group_min.append(minimum)
+	group_max.append(maximum)
+	group_mean.append(mean)
+	daily_change = stock_change(stock)
+	group_change.append(daily_change)
+	daily_return = stock_return(daily_change, stock)
+	group_rate.append(daily_return)
+	top, bottom = return_analysis(daily_return)
+	high = simple_volatility(daily_change)
+	group_high.append(high)
+	positive, negative= consistency(daily_change)
+	group_positive.append(positive)
+	group_negative.append(negative)
+	group_frequency.append(len(positive))
+	rate_positive = rate_consistent(positive, daily_change)
+	group_ratio.append(rate_positive)
+
 meanReturn, volumeFrequency, highChange= compare_stock(group_rate, group_frequency, group_high)
 
 
