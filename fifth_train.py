@@ -39,7 +39,16 @@ def simple_volatility(changes):
 	abs_change = max(absolute_changes)
 	return abs_change
 
-#
+#rate return
+def filter_return(rates):
+  days_positive=[]
+  days_negative=[]
+  for rate in rates:
+    if rate > 0:
+      days_positive.append(rate)
+    else:
+      days_negative.append(rate)
+  return days_positive, days_negative
 
 # result= {}
 # for price in prices:
