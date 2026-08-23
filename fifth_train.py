@@ -4,20 +4,21 @@ asset={
 
 #statistic
 def assets_statistic(prices):
-	return{
-		"rangePrice": len(prices),
-		"minPrice": min(prices),
-		"minPrice": max(prices),
-		"meanPrice": sum(prices)/len(prices)
-	}
+  rangePrice= len(prices)
+  minPrice= min(prices)
+  maxPrice= max(prices)
+  meanPrice= round(sum(prices)/len(prices),2)
+  return rangePrice, minPrice, maxPrice, meanPrice
 
 #daily change
 def daily_change(prices):
-	changes=[]
-	for price in prices:
-		gap= prices[price+1] - prices[prices]
-		changes.append(gap)
-	return changes
+  changes=[]
+  for price in range(len(prices)-1):
+    first_price = prices[price]
+    second_price = prices[price+1]
+    gap= second_price - first_price
+    changes.append(gap)
+  return changes
 	
 #daily return
 def daily_return(gaps, prices):
@@ -50,7 +51,23 @@ def filter_return(rates):
       days_negative.append(rate)
   return days_positive, days_negative
 
-# result= {}
-# for price in prices:
-# 	asset
-# print(asset["stock"])
+
+result= {}
+for prices in asset.values():
+  #print(prices)
+  stats = assets_statistic(prices)
+  change = daily_change(prices)
+  print("ini", stats[0])
+  print(type(stats))
+  print(type(stats[0]))
+  print("ini", change[0])
+  print(type(change))
+  print(type(change[0]))
+  result.update({
+    "statistic": stats,
+    "Changes": change
+    }
+  )
+
+print(result)
+print(result["statistic"])
