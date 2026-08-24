@@ -57,17 +57,36 @@ for prices in asset.values():
   #print(prices)
   stats = assets_statistic(prices)
   change = daily_change(prices)
+  rate = daily_return(change, prices)
+  classification = return_classification(rate)
+  abs_value = simple_volatility(change)
   print("ini", stats[0])
   print(type(stats))
   print(type(stats[0]))
   print("ini", change[0])
   print(type(change))
   print(type(change[0]))
+  print("ini", rate[0])
+  print(type(rate))
+  print(type(rate[0]))
+  print("ini", classification[0])
+  print(type(classification))
+  print(type(classification[0]))
+  print("ini", abs_value)
+  print(type(abs_value))
+  print(type(abs_value))
   result.update({
     "statistic": stats,
-    "Changes": change
+    "changes": change,
+    "return": rate,
+    "limit": classification,
+    "absolute": abs_value
     }
   )
 
 print(result)
-print(result["statistic"])
+print("hasil", result["statistic"])
+print("hasil", result["changes"])
+print("hasil", result["return"])
+print("hasil", result["limit"])
+print("hasil", result["absolute"])
