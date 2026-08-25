@@ -49,44 +49,65 @@ def filter_return(rates):
       days_positive.append(rate)
     else:
       days_negative.append(rate)
-  return days_positive, days_negative
+  ratio_return= round((len(days_positive)/len(rates))*100, 2)
+  return days_positive, days_negative, ratio_return
 
+#assesment asset
+def assesment_asset(rates, positive_ratio):
+  mean_return= round(sum(rates)/len(rates), 2)
+  if mean_return > 1 and positive_ratio > 70:
+    value = "Excellent"
+  elif mean_return < 1 and positive_ratio > 70 or mean_return > 1 and positive_ratio < 70:
+    value = "Good"
+  else:
+    value = "Fair"
+  return value
 
-result= {}
+#main program
+report= {}
 for prices in asset.values():
-  #print(prices)
   stats = assets_statistic(prices)
   change = daily_change(prices)
   rate = daily_return(change, prices)
   classification = return_classification(rate)
   abs_value = simple_volatility(change)
-  print("ini", stats[0])
-  print(type(stats))
-  print(type(stats[0]))
-  print("ini", change[0])
-  print(type(change))
-  print(type(change[0]))
-  print("ini", rate[0])
-  print(type(rate))
-  print(type(rate[0]))
-  print("ini", classification[0])
-  print(type(classification))
-  print(type(classification[0]))
-  print("ini", abs_value)
-  print(type(abs_value))
-  print(type(abs_value))
-  result.update({
+  positive, negative, ratio_return = filter_return(rate)
+  assesment = assesment_asset(rate, ratio_return)
+  report.update({
     "statistic": stats,
     "changes": change,
     "return": rate,
     "limit": classification,
-    "absolute": abs_value
+    "absolute": abs_value,
+    "positive": positive,
+    "negative": negative,
+    "winrate": ratio_return,
+    "assesment": assesment
     }
   )
 
-print(result)
-print("hasil", result["statistic"])
-print("hasil", result["changes"])
-print("hasil", result["return"])
-print("hasil", result["limit"])
-print("hasil", result["absolute"])
+#output
+print("<"+"="*10+" Analysis Report "+"="*10+">")
+print("# Descriptive Statistic")
+print("1. Asset Price Frequency:", report["statistic"][0])
+print("2. Lowest Asset Price:", report["statistic"][1])
+print("3. Highest Asset Price:", report["statistic"][2])
+print("4. Average Asset Price:", report["statistic"][3])
+print("# Daily Change")
+for i, data in enumerate(report["changes"], start=1):
+  print(f"Price Change no. {i}: {data}")
+print("# Daily Return")
+for i, data in enumerate(report["return"], start=1):
+  print(f"Percentage Change in Price no. {i}: {data}%")
+print("# Classification Percentage Price")
+print("1. Lowest Asset Price:", report["limit"][0],"%")
+print("2. Highest Asset Price:", report["limit"][1],"%")
+print("3. Average Asset Price:", report["limit"][2],"%")
+print("# Simple Volatility")
+print("1. Simple Volatility of Asset Price Changes:", report["absolute"])
+print("# Filter Percentage Price")
+print("1. Positive Change in Asset Prices: "+", ".join(f"{data}%" for data in report["positive"]))
+print("2. Negative Change in Asset Prices: "+", ".join(f"{data}%" for data in report["negative"]))
+print("3. The Ratio of the Positive Percentage Change in Asset Prices:", report["winrate"],"%")
+print("# Assesment Asset")
+print("1. Overall Assesment of Asset Performance:", report["assesment"])
