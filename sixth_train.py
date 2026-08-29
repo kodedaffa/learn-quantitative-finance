@@ -28,7 +28,7 @@ def return_classification(rates):
     negative_days = rates[rates <= 0]
     highest = np.max(rates)
     lowest = np.min(rates)
-    mean_rates = np.mean(rates)
+    mean_rates = round(np.mean(rates), 2)
     return positive_days, negative_days, highest, lowest, mean_rates
 
 #function to assess the asset based on mean return and positive ratio
@@ -43,6 +43,13 @@ def simple_volatility(changes):
     absolute_changes = np.abs(changes)
     abs_change = np.max(absolute_changes)
     return abs_change
+
+#function to compare prices to the mean price
+def compare_prices(prices, mean_price):
+    above_mean = prices[prices > mean_price]
+    below_mean = prices[prices < mean_price]
+    equal_160 = prices[prices >= 160]
+    return above_mean, equal_160, below_mean
 
 #main program
 report = {}
@@ -78,6 +85,13 @@ report['conditional_three'] = conditional_three
 
 #program absolute
 abs_value = simple_volatility(change)
+report['simple_volatility'] = abs_value
+
+#program compare prices
+above_mean, equal_160, below_mean = compare_prices(prices, report['mean'])
+report['above_mean'] = above_mean
+report['equal_160'] = equal_160
+report['below_mean'] = below_mean
 
 #output
 print("Highest Price:", report['max'])
@@ -91,10 +105,13 @@ for i, data in enumerate(report['daily_return'], start=1):
     print(f"Daily Return no. {i}: {data}%")
 print("Positive Days:", report['positive_days'])
 print("Negative Days:", report['negative_days'])
-print("Highest Return:", report['highest'])
-print("Lowest Return:", report['lowest'])
-print("Mean Return:", report['mean_rates'])
+print("Highest Return:", report['highest'], "%")
+print("Lowest Return:", report['lowest'], "%")
+print("Mean Return:", report['mean_rates'], "%")
 print("Conditional One (Return > 1):", report['conditional_one'])
 print("Conditional Two (Return < 0):", report['conditional_two'])
 print("Conditional Three (0 <= Return <= 1):", report['conditional_three'])
-print("Simple Volatility (Max Absolute Change):", abs_value)
+print("Simple Volatility (Max Absolute Change):", report['simple_volatility'])
+print("Prices Above Mean:", report['above_mean'])
+print("Prices Below Mean:", report['below_mean'])
+print("Prices Equal to 160:", report['equal_160'])
