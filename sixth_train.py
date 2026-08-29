@@ -1,7 +1,6 @@
 import numpy as np
 
 prices = np.array([150, 153, 151, 156, 160, 158, 162, 165, 163, 168])
-print("Prices:", prices)
 
 #function to calculate statistics of asset prices
 def stats_asset(prices):
@@ -53,65 +52,59 @@ def compare_prices(prices, mean_price):
 
 #main program
 report = {}
-#program statstic
 statistic = stats_asset(prices)
-report['range'] = statistic[0]
-report['min'] = statistic[1]
-report['max'] = statistic[2]
-report['mean'] = statistic[3]
-report['shape'] = statistic[4]
-
-#program change
 change = daily_change(prices)
-report['daily_change'] = change
-
-#program return
 rate = daily_return(change, prices)
-report['daily_return'] = rate
-
-#program classification
 positive_days, negative_days, highest, lowest, mean_rates = return_classification(rate)
-report['positive_days'] = positive_days
-report['negative_days'] = negative_days
-report['highest'] = highest
-report['lowest'] = lowest
-report['mean_rates'] = mean_rates
-
-#program conditional
 conditional_one, conditional_two, conditional_three = conditional_analysis(rate)
-report['conditional_one'] = conditional_one
-report['conditional_two'] = conditional_two
-report['conditional_three'] = conditional_three
-
-#program absolute
 abs_value = simple_volatility(change)
-report['simple_volatility'] = abs_value
-
-#program compare prices
-above_mean, equal_160, below_mean = compare_prices(prices, report['mean'])
-report['above_mean'] = above_mean
-report['equal_160'] = equal_160
-report['below_mean'] = below_mean
+above_mean, equal_160, below_mean = compare_prices(prices, statistic[3])
+report.update({
+    "statistic": statistic,
+    "changes": change,
+    "return": rate,
+    "positive_days": positive_days,
+    "negative_days": negative_days,
+    "highest": highest,
+    "lowest": lowest,
+    "mean_rates": mean_rates,
+    "conditional_one": conditional_one,
+    "conditional_two": conditional_two,
+    "conditional_three": conditional_three,
+    "simple_volatility": abs_value,
+    "above_mean": above_mean,
+    "equal_160": equal_160,
+    "below_mean": below_mean
+})
 
 #output
-print("Highest Price:", report['max'])
-print("Lowest Price:", report['min'])
-print("Average Price:", report['mean'])
-print("Price Range:", report['range'])
-print("Price Shape:", report['shape'])
-for i, data in enumerate(report['daily_change'], start=1):
-    print(f"Daily Change no. {i}: {data}")
-for i, data in enumerate(report['daily_return'], start=1):
-    print(f"Daily Return no. {i}: {data}%")
-print("Positive Days:", report['positive_days'])
-print("Negative Days:", report['negative_days'])
-print("Highest Return:", report['highest'], "%")
-print("Lowest Return:", report['lowest'], "%")
-print("Mean Return:", report['mean_rates'], "%")
-print("Conditional One (Return > 1):", report['conditional_one'])
-print("Conditional Two (Return < 0):", report['conditional_two'])
-print("Conditional Three (0 <= Return <= 1):", report['conditional_three'])
-print("Simple Volatility (Max Absolute Change):", report['simple_volatility'])
-print("Prices Above Mean:", report['above_mean'])
-print("Prices Below Mean:", report['below_mean'])
-print("Prices Equal to 160:", report['equal_160'])
+print("<" + "=" * 10 + " Analysis Report " + "=" * 10 + ">")
+print("# Statistic of Asset Prices")
+print("1. Asset Price Frequency:", report["statistic"][0])
+print("2. Highest Price:", report["statistic"][2])
+print("3. Lowest Price:", report["statistic"][1])
+print("4. Average Price:", report["statistic"][3])
+print("5. Price Range:", report["statistic"][0])
+print("6. Price Shape:", report["statistic"][4])
+print("# Change of Asset Prices")
+for i, change in enumerate(report["changes"], start=1):
+    print(f"Change Day no. {i}: {change}")
+print("# Return of Asset Prices")
+for i, return_val in enumerate(report["return"], start=1):
+    print(f"Return Day no. {i}: {return_val}%")
+print("# Positive and Negative Days")
+print("1. Positive Days:"+", ".join(f"{day}%" for day in report["positive_days"]))
+print("2. Negative Days:"+", ".join(f"{day}%" for day in report["negative_days"]))
+print("3. Highest Return:", report["highest"], "%")  
+print("4. Lowest Return:", report["lowest"], "%")
+print("5. Mean Return:", report["mean_rates"], "%")
+print("# Conditional Analysis")
+print("1. Days with Return > 1%: "+", ".join(f"{day}%" for day in report["conditional_one"]))
+print("2. Days with Return < 0%: "+", ".join(f"{day}%" for day in report["conditional_two"]))
+print("3. Days with Return between 0% and 1%: "+", ".join(f"{day}%" for day in report["conditional_three"]))
+print("# Simple Volatility")
+print("1. Simple Volatility of Asset Price Changes:", report["simple_volatility"])
+print("# Comparison to Mean Price")
+print("1. Prices Above Mean Price:", report["above_mean"])
+print("2. Prices Equal or Above 160:", report["equal_160"])
+print("3. Prices Below Mean Price:", report["below_mean"])
